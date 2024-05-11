@@ -9,15 +9,11 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed = 5f;
     public float runSpeed = 8f;
     
-
-    private CharacterController controller; // Reference to the CharacterController component
     private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Get the reference to the CharacterController component attached to the player
-        controller = GetComponent<CharacterController>();
         rb =  GetComponent<Rigidbody>();
     }
 
@@ -46,9 +42,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Apply movement to the player
         rb.velocity = moveDirection * speed;
-        //controller.Move(moveDirection * speed * Time.deltaTime);
-
-
     }
 }
 
