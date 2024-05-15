@@ -7,7 +7,14 @@ public class FriendFollow : MonoBehaviour
     public Transform player;
     public Transform target; // Reference to the player's transform
     public bool canFollow = false;
-    public float followSpeed = 5f; // Speed at which the friend follows the player
+
+
+    public float speed = 5f; // Speed at which the friend follows the player
+    public float runSpeed = 8f;
+    public float crouchSpeed = 2f;
+    public float walkSpeed = 5f;
+
+
     public float stoppingDistance = 1.1f; // Distance at which the friend stops following
     public GameObject friendFollowing = null;
 
@@ -19,6 +26,22 @@ public class FriendFollow : MonoBehaviour
         // Get the reference to the Rigidbody component attached to the friend
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player").transform;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = runSpeed;
+        }
+        else if (Input.GetKey(KeyCode.LeftControl))
+        {
+            speed = crouchSpeed;
+        }
+        else
+        {
+            speed = walkSpeed;
+        }
     }
 
     // Update is called once per frame
@@ -41,7 +64,7 @@ public class FriendFollow : MonoBehaviour
             if (distance > stoppingDistance && distanceToPlayer > stoppingDistance)
             {
                 // Apply force to move the friend towards the player
-                rb.velocity = direction * followSpeed;
+                rb.velocity = direction * speed;
             }
             else
             {
