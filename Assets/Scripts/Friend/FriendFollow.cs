@@ -14,7 +14,7 @@ public class FriendFollow : MonoBehaviour
     public float crouchSpeed = 2f;
     public float walkSpeed = 5f;
 
-
+    public float leavingThreshold = 3f;
     public float stoppingDistance = 1.1f; // Distance at which the friend stops following
     public GameObject friendFollowing = null;
 
@@ -65,6 +65,11 @@ public class FriendFollow : MonoBehaviour
             {
                 // Apply force to move the friend towards the player
                 rb.velocity = direction * speed;
+                if (distance > leavingThreshold)
+                {
+                    LeaveTarget();
+                    LeaveFriend();
+                }
             }
             else
             {
@@ -92,15 +97,58 @@ public class FriendFollow : MonoBehaviour
         }
     }
 
+    public void LeaveTarget()
+    {
+        if(target != null)
+        {
+            if(target == player)
+            {
+                player.GetComponent<PlayerInteraction>().friendFollowing = null;
+            }
+            else
+            {
+                target.GetComponent<FriendFollow>().friendFollowing = null;
+            }
+            target = null;
+            canFollow = false;
+        }
+
+        player.GetComponent<PlayerInteraction>().FriendCount();
+    }
+
     public void LeaveFriend()
     {
-        FriendFollow friendFollow = friendFollowing.GetComponent<FriendFollow>();
-        if (friendFollow != null)
+        if(friendFollowing != null)
         {
-            friendFollow.target = null;
-            friendFollow.canFollow = false;
-            friendFollow.LeaveFriend();
-            friendFollowing = null;
+            FriendFollow friendFollow = friendFollowing.GetComponent<FriendFollow>();
+            if (friendFollow != null)
+            {
+                friendFollow.target = null;
+                friendFollow.canFollow = false;
+                friendFollow.LeaveFriend();
+                friendFollowing = null;
+            }
         }
+
+        player.GetComponent<PlayerInteraction>().FriendCount();
+    }
+
+    public bool IsFriendInList(GameObject friend)
+    {
+        bool isInList = false;
+
+        if (friendFollowing != null)
+        {
+            if (friend == friendFollowing)
+            {
+                isInList = true;
+            }
+            else
+            {
+                isInList = friendFollowing.GetComponent<FriendFollow>().IsFriendInList(friend);
+            }
+        }
+
+        return isInList;
     }
 }

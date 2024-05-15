@@ -5,6 +5,7 @@ using UnityEngine;
 public class FriendSpawner : MonoBehaviour
 {
     public GameObject friendPrefab; // Prefab of the friend GameObject
+    public GameObject npcPrefab;
     public GameObject seats; // GameObject containing the seats
 
     public int numberOfFriendsToSpawn = 3; // Number of friends to spawn
@@ -44,6 +45,15 @@ public class FriendSpawner : MonoBehaviour
             else
             {
                 Debug.LogWarning("No unoccupied seats available to spawn friend.");
+            }
+        }
+
+        for (int i = 0; i < occupiedSeats.Length; i++)
+        {
+            if (!occupiedSeats[i])
+            {
+                GameObject newFriend = Instantiate(npcPrefab, seatPositions[i].position, Quaternion.identity);
+                occupiedSeats[i] = true;
             }
         }
     }

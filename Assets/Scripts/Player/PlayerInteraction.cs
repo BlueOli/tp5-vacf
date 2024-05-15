@@ -24,7 +24,21 @@ public class PlayerInteraction : MonoBehaviour
                 // Get the GameObject attached to the collider
                 GameObject obj = collider.gameObject;
 
-                if (obj.CompareTag("Friend") && obj != friendFollowing)
+                bool isFriendInList = false;
+
+                if(friendFollowing != null)
+                {
+                    if(friendFollowing == obj)
+                    {
+                        isFriendInList = true;
+                    }
+                    else
+                    {
+                        isFriendInList = friendFollowing.GetComponent<FriendFollow>().IsFriendInList(obj);
+                    }
+                }
+
+                if (obj.CompareTag("Friend") && !isFriendInList)
                 {
                     GameObject friend = obj;
                     // Debug the name of the friend GameObject
@@ -32,7 +46,6 @@ public class PlayerInteraction : MonoBehaviour
                     FriendFollow friendFollow = friend.GetComponent<FriendFollow>();
                     if(friendFollow != null)
                     {
-                        friendsTagged++;
                         if(friendFollowing == null)
                         {
                             friendFollow.target = this.transform;
@@ -45,6 +58,8 @@ public class PlayerInteraction : MonoBehaviour
                         }
                         
                     }
+
+                    FriendCount();
                 }               
             }
         }
@@ -63,6 +78,8 @@ public class PlayerInteraction : MonoBehaviour
                     friendFollowing = null;
                 }
             }
+
+            FriendCount();
         }
     }
 
@@ -71,5 +88,31 @@ public class PlayerInteraction : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, interactionRadius);
+    }
+
+    public void FriendCount()
+    {
+        friendsTagged = 0;
+
+        if(friendFollowing != null)
+        {
+            bool endReached = false;
+            GameObject lastFriend = friendFollowing;
+            do
+            {
+                friendsTagged++;
+                GameObject newFriend = lastFriend.GetComponent<FriendFollow>().friendFollowing;
+                if(newFriend != null)
+                {
+                    endReached = false;
+                    lastFriend = newFriend;
+                }
+                else
+                {
+                    endReached = true;
+                }
+
+            } while (!endReached);
+        }
     }
 }

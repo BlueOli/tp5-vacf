@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ExitDoor : MonoBehaviour
 {
+    public GameManager Manager;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            int friendAmount = other.gameObject.GetComponent<PlayerInteraction>().friendsTagged;
-            Debug.Log("Te escapaste con " + friendAmount + " amigos.");
+            Manager.DoorReached();
         }
     }
 }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8115578524290627723}
   - component: {fileID: 2368479198606755430}
   - component: {fileID: 4077087648149388260}
+  - component: {fileID: 2546467436162088501}
   m_Layer: 0
   m_Name: Friend
   m_TagString: Friend
@@ -149,6 +150,24 @@ MonoBehaviour:
   player: {fileID: 0}
   target: {fileID: 0}
   canFollow: 0
-  followSpeed: 5
+  speed: 5
+  runSpeed: 8
+  crouchSpeed: 2
+  walkSpeed: 5
+  leavingThreshold: 2
   stoppingDistance: 1.1
   friendFollowing: {fileID: 0}
+--- !u!114 &2546467436162088501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3274151972513790061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ce097feeb358844862464d62aacc5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  friendFollow: {fileID: 4077087648149388260}
