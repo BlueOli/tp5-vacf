@@ -18,6 +18,8 @@ public class FriendFollow : MonoBehaviour
     public float stoppingDistance = 1.1f; // Distance at which the friend stops following
     public GameObject friendFollowing = null;
 
+    private bool hasReachedTargetOnce = false;
+
     private Rigidbody rb; // Reference to the Rigidbody component
 
     // Start is called before the first frame update
@@ -65,16 +67,21 @@ public class FriendFollow : MonoBehaviour
             {
                 // Apply force to move the friend towards the player
                 rb.velocity = direction * speed;
-                if (distance > leavingThreshold)
+                if (distance > leavingThreshold && hasReachedTargetOnce)
                 {
                     LeaveTarget();
                     LeaveFriend();
+                    hasReachedTargetOnce = false;
                 }
             }
             else
             {
                 // If within stopping distance, stop moving
                 rb.velocity = Vector3.zero;
+                if (!hasReachedTargetOnce && distance <= stoppingDistance)
+                {
+                    hasReachedTargetOnce = true;
+                }
             }
         }
     }
